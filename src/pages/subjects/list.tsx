@@ -1,17 +1,97 @@
 import { CreateButton } from '@/components/refine-ui/buttons/create'
+import { DataTable } from '@/components/refine-ui/data-table/data-table'
 import { Breadcrumb } from '@/components/refine-ui/layout/breadcrumb'
 import { ListView } from '@/components/refine-ui/views/list-view'
+import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { DEPARTMENT_OPTIONS } from '@/constants'
-import { Search } from 'lucide-react'
-import React, { use, useState } from 'react'
+import { Subject } from '@/types'
+import { useTable } from '@refinedev/react-table'
+import { ColumnDef } from '@tanstack/react-table'
+import { Filter, Search } from 'lucide-react'
+import React, { useMemo, useState } from 'react'
 
 const SubjectsList = () => {
 
 
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedDepartment, setSelectedDepartment] = useState('all');
+
+
+
+    // i think what this does is check if selectedDepartment is all if it is do nothing
+    // else if its not all then we take the content of department and compare it with value
+    // and it does by forloop by as const, so its pretty much foreach field:department find the equal 
+    // for the givin value
+    const departmentFilters = selectedDepartment === 'all' ? [] : [
+        { field: 'department', operator: 'eq' as const, value: selectedDepartment }
+    ]
+
+    // if searchQuery has a value take that value and search through the field names 
+    // that has the current content of search qeury else do nothing 
+    const searchFilters = searchQuery ? [
+        { field: 'name', operator: 'contains' as const, value: searchQuery }
+    ] : []
+
+    // what show the data in the table
+    // subject is the type fo class , wierd its type script thing
+    //if you see anything like that its type script
+    const subjectTable = useTable<Subject>({
+
+        //columns of the table data
+        //useMemo = “remember this value so it doesn’t get recreated every time”
+        columns: useMemo<ColumnDef<Subject>[]>(() => [
+            {
+                id: 'code',
+                accessorKey: 'code',
+                size: 100,
+                header: () => <p className="column-title ml-2">Code</p>,
+                cell: ({ getValue }) => <Badge>{getValue<string>()}</Badge>
+            },
+            {
+                id: 'name',
+                accessorKey: 'name',
+                size: 200,
+                header: () => <p className="column-title">Name</p>,
+                cell: ({ getValue }) => <span className='text-foreground'>{getValue<string>()}</span>,
+
+ //   this enable column text base Filter, on this specific column(Name)
+                filterFn: 'includesString'
+
+
+            },
+            {
+                id: 'department',
+                accessorKey: 'department',
+                size: 150,
+                header: () => <p className="column-title">Department</p>,
+                //  variant={'secondary'} this change the color of badge
+                cell: ({ getValue }) => <Badge variant={'secondary'}>{getValue<string>()}</Badge>,
+
+
+            },
+            {
+                id: 'description',
+                accessorKey: 'description',
+                size: 300,
+                header: () => <p className="column-title">Description</p>,
+                cell: ({ getValue }) => <span className='truncate line-clamp-2'>{getValue<string>()}</span>
+
+            }
+        ], []),
+
+        refineCoreProps: {
+            resource: 'subjects',
+            pagination: { pageSize: 10, mode: 'server' },
+            filters: {
+
+                // spread the filters 
+                permanent: [...departmentFilters, ...searchFilters]
+            },
+            sorters: {}
+        }
+    });
 
     return (
         <ListView>
@@ -50,9 +130,14 @@ const SubjectsList = () => {
                                     All Department
                                 </SelectItem>
 
-{/* 
-
-                        this is just ok from 
+                                {/*                                 
+problem, show data for department selector ,
+solution:
+we create a constants folder and have a file where we any constant value, 
+the value will be givin like this below, the value is the acutally value and 
+label just whats shown this is good becuase we can change any of them anytime we want
+and it will not change anything else , jsut the name/label, like we want math to be mathematic
+but we dont want to redo the backend then we just change the label 
                         [
   { value: 'CS', label: 'CS' },
   { value: 'Math', label: 'Math' },
@@ -62,7 +147,7 @@ we will map on each one get each value of object and put it in d so now we can a
                                 {DEPARTMENT_OPTIONS.map(d => (
                                     <SelectItem key={d.value}
                                         value={d.value}>
-                                            {d.label}
+                                        {d.label}
                                     </SelectItem>
                                 ))}
 
@@ -75,7 +160,10 @@ we will map on each one get each value of object and put it in d so now we can a
                 </div>
             </div>
 
-            
+            {/* table that shows the data */}
+            <DataTable table={subjectTable} />
+
+
         </ListView>
     )
 }
