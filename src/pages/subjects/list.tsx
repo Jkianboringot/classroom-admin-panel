@@ -19,11 +19,15 @@ const SubjectsList = () => {
     const [selectedDepartment, setSelectedDepartment] = useState('all');
 
 
-
+        //#423 { field: 'department', operator: 'eq' as const, value: selectedDepartment } 
     // i think what this does is check if selectedDepartment is all if it is do nothing
     // else if its not all then we take the content of department and compare it with value
     // and it does by forloop by as const, so its pretty much foreach field:department find the equal 
     // for the givin value
+
+    //update on my thought on the top(#423):
+        //- the as const is not a forloop its just a hint type so thier is no forloop
+        //- its just this 'Get data where department is equal to selectedDepartment' i just over complicated it
     const departmentFilters = selectedDepartment === 'all' ? [] : [
         { field: 'department', operator: 'eq' as const, value: selectedDepartment }
     ]
@@ -89,7 +93,11 @@ const SubjectsList = () => {
                 // spread the filters 
                 permanent: [...departmentFilters, ...searchFilters]
             },
-            sorters: {}
+            sorters: {
+                initial:[
+                    {field:'id',order:'desc'}
+                ]
+            }
         }
     });
 
