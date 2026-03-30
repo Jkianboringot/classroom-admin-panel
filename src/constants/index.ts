@@ -46,6 +46,8 @@
 
 
 
+import { createDataProvider } from "@refinedev/rest";
+import { SortingColumn } from "@tanstack/react-table";
 import { GraduationCap, School } from "lucide-react";
 
 export const USER_ROLES = {
@@ -67,29 +69,16 @@ export const ROLE_OPTIONS = [
     },
 ];
 
-export const DEPARTMENTS = [
-    "Computer Science",
-    "Mathematics",
-    "Physics",
-    "Chemistry",
-    "Biology",
-    "English",
-    "History",
-    "Geography",
-    "Economics",
-    "Business Administration",
-    "Engineering",
-    "Psychology",
-    "Sociology",
-    "Political Science",
-    "Philosophy",
-    "Education",
-    "Fine Arts",
-    "Music",
-    "Physical Education",
-    "Law",
-] as const;
 
+// if i want to connect this into the backend i just need this to show the data, but how
+export const DEPARTMENTS =async ()=>{
+    const dept= await fetch('http://localhost:8000/api/departments').then(res=>res.json());
+    const arrDept=[]
+    const arr = arrDept.push(dept.data.name)
+     return arrDept
+}
+
+// /remove for now ebcuase i want to show real department in subejcts filter
 export const DEPARTMENT_OPTIONS = DEPARTMENTS.map((dept) => ({
     value: dept,
     label: dept,
