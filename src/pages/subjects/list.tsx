@@ -19,15 +19,15 @@ const SubjectsList = () => {
     const [selectedDepartment, setSelectedDepartment] = useState('all');
 
 
-        //#423 { field: 'department', operator: 'eq' as const, value: selectedDepartment } 
+    //#423 { field: 'department', operator: 'eq' as const, value: selectedDepartment } 
     // i think what this does is check if selectedDepartment is all if it is do nothing
     // else if its not all then we take the content of department and compare it with value
     // and it does by forloop by as const, so its pretty much foreach field:department find the equal 
     // for the givin value
 
     //update on my thought on the top(#423):
-        //- the as const is not a forloop its just a hint type so thier is no forloop
-        //- its just this 'Get data where department is equal to selectedDepartment' i just over complicated it
+    //- the as const is not a forloop its just a hint type so thier is no forloop
+    //- its just this 'Get data where department is equal to selectedDepartment' i just over complicated it
     const departmentFilters = selectedDepartment === 'all' ? [] : [
         { field: 'department', operator: 'eq' as const, value: selectedDepartment }
     ]
@@ -60,7 +60,7 @@ const SubjectsList = () => {
                 header: () => <p className="column-title">Name</p>,
                 cell: ({ getValue }) => <span className='text-foreground'>{getValue<string>()}</span>,
 
- //   this enable column text base Filter, on this specific column(Name)
+                //   this enable column text base Filter, on this specific column(Name)
                 filterFn: 'includesString'
 
 
@@ -94,8 +94,8 @@ const SubjectsList = () => {
                 permanent: [...departmentFilters, ...searchFilters]
             },
             sorters: {
-                initial:[
-                    {field:'id',order:'desc'}
+                initial: [
+                    { field: 'id', order: 'desc' }
                 ]
             }
         }
@@ -138,7 +138,7 @@ const SubjectsList = () => {
                                     All Department
                                 </SelectItem>
 
-                                {/*                                 
+                                {/* #region                         
 problem, show data for department selector ,
 solution:
 we create a constants folder and have a file where we any constant value, 
@@ -151,7 +151,7 @@ but we dont want to redo the backend then we just change the label
   { value: 'Math', label: 'Math' },
   { value: 'English', label: 'English' }
 ]
-we will map on each one get each value of object and put it in d so now we can access value and label */}
+we will map on each one get each value of object and put it in d so now we can access value and label #endregion*/}
                                 {DEPARTMENT_OPTIONS.map(d => (
                                     <SelectItem key={d.value}
                                         value={d.value}>
