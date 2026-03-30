@@ -1,38 +1,3 @@
-// import { createSimpleRestDataProvider } from "@refinedev/rest/simple-rest";
-// import { API_URL } from "./constants";
-// export const { dataProvider, kyInstance } = createSimpleRestDataProvider({
-//   apiURL: API_URL,
-// });
-
-
-import { BaseRecord, DataProvider, GetListParams, GetListResponse } from "@refinedev/core";
-import { data } from "react-router";
-import {MOCK_SUBJECT} from '../constants/mock-data'
-export const dataProvider: DataProvider = {
-  getList: async<TData extends BaseRecord = BaseRecord>({ resource }:
-    GetListParams): Promise<GetListResponse<TData>> => {
-    if (resource !== 'subjects'){
-       return { data: [] as TData[], total: 0 }
-}
-    return {
-      data: MOCK_SUBJECT as unknown as TData[], total:MOCK_SUBJECT.length
-
-    }
-  },
-
-getOne:async ()=>{ throw new Error('This function is not present in mock')},
-create:async ()=>{ throw new Error('This function is not present in mock')},
-update:async ()=>{ throw new Error('This function is not present in mock')},
-deleteOne:async ()=>{ throw new Error('This function is not present in mock')},
-
-getApiUrl:()=>''
-}
-
-
-
-
-// give this to ai to generate data
-// create mock subject data in typescrip fro three university courses each subjectt shoud include an id,crouse code, name, department and a breif description
 // // import { createSimpleRestDataProvider } from "@refinedev/rest/simple-rest";
 // // import { API_URL } from "./constants";
 // // export const { dataProvider, kyInstance } = createSimpleRestDataProvider({
@@ -41,13 +6,16 @@ getApiUrl:()=>''
 
 
 // import { BaseRecord, DataProvider, GetListParams, GetListResponse } from "@refinedev/core";
+// import { data } from "react-router";
+// import {MOCK_SUBJECT} from '../constants/mock-data'
 // export const dataProvider: DataProvider = {
 //   getList: async<TData extends BaseRecord = BaseRecord>({ resource }:
 //     GetListParams): Promise<GetListResponse<TData>> => {
-//     if (resource !== 'subjects') return { data: [] as TData[], total: 0 }
-
+//     if (resource !== 'subjects'){
+//        return { data: [] as TData[], total: 0 }
+// }
 //     return {
-//       data: [], total: 0
+//       data: MOCK_SUBJECT as unknown as TData[], total:MOCK_SUBJECT.length
 
 //     }
 //   },
@@ -59,3 +27,63 @@ getApiUrl:()=>''
 
 // getApiUrl:()=>''
 // }
+
+
+
+
+// // give this to ai to generate data
+// // create mock subject data in typescrip fro three university courses each subjectt shoud include an id,crouse code, name, department and a breif description
+// // // import { createSimpleRestDataProvider } from "@refinedev/rest/simple-rest";
+// // // import { API_URL } from "./constants";
+// // // export const { dataProvider, kyInstance } = createSimpleRestDataProvider({
+// // //   apiURL: API_URL,
+// // // });
+
+
+// // import { BaseRecord, DataProvider, GetListParams, GetListResponse } from "@refinedev/core";
+// // export const dataProvider: DataProvider = {
+// //   getList: async<TData extends BaseRecord = BaseRecord>({ resource }:
+// //     GetListParams): Promise<GetListResponse<TData>> => {
+// //     if (resource !== 'subjects') return { data: [] as TData[], total: 0 }
+
+// //     return {
+// //       data: [], total: 0
+
+// //     }
+// //   },
+
+// // getOne:async ()=>{ throw new Error('This function is not present in mock')},
+// // create:async ()=>{ throw new Error('This function is not present in mock')},
+// // update:async ()=>{ throw new Error('This function is not present in mock')},
+// // deleteOne:async ()=>{ throw new Error('This function is not present in mock')},
+
+// // getApiUrl:()=>''
+// // }
+
+
+import { BACKEND_BASE_URL } from '@/constants'
+import { ListResponse } from '@/types'
+import { createDataProvider, CreateDataProviderOptions } from '@refinedev/rest'
+
+const options: CreateDataProviderOptions = {
+  getList: {
+    getEndpoint: ({ resource }) => resource,// simple returning endpoint
+    mapResponse: async (response) => {
+      const payload: ListResponse = await response.json()
+      return payload.data ?? []//if payload.data does not exist just be empty array
+    },
+    getTotalCount: async (response) => {
+      const payload: ListResponse = await response.json()
+
+      return payload.pagination?.total ?? payload.data?.length ?? 0 //this ts shit is confusing hahah
+      // process flow
+      // 1. Try payload.pagination?.total
+      // 2. If null/undefined → try payload.data?.length
+      // 3. If still null/undefined → use 0
+
+    }
+  }
+}
+
+const { dataProvider } = createDataProvider(BACKEND_BASE_URL, options)
+export { dataProvider }
