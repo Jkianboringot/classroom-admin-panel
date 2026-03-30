@@ -85,5 +85,5 @@ const options: CreateDataProviderOptions = {
   }
 }
 
-const { dataProvider } = createDataProvider(BACKEND_BASE_URL, options)
+const { dataProvider } = createDataProvider('http://localhost:8000/api/', options)
 export { dataProvider }
