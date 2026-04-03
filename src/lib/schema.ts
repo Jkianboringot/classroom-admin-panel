@@ -44,7 +44,7 @@ export const facultySchema = z.object({
     }),
 
     // No min length here — department can be any non-empty string
-    department: z.string(),
+    department: z.string().min(1, "Department is required"),
 
     // .optional() means this field can be undefined/missing entirely
     // These are Cloudinary image fields — only present after an image is uploaded

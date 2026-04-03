@@ -5,7 +5,7 @@ import { useBack } from "@refinedev/core";
 import { Separator } from "@/components/ui/separator.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { useForm } from "@refinedev/react-hook-form"
 import { classSchema } from "@/lib/schema.ts";
 import * as z from "zod";
 
@@ -128,7 +128,7 @@ const Create = () => {
                       </FormLabel>
                       <FormControl>
                         <UploadWidget value={field.value ? { url: field.value, publicId: bannerPublicId ?? '' } : null}
-                          onChange={(field: any, file: any) => setBannerImage(field, file)} />
+                          onChange={( file: any) => setBannerImage(field, file)} />
                       </FormControl>
                       <FormMessage />
                       {errors.bannerCldPubId && !errors.bannerUrl && (
