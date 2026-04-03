@@ -77,12 +77,12 @@ const Create = () => {
 
   const bannerPublicId = form.watch('bannerCldPubId')
 
-  const setBannerImage = (field, file) => {
+  const setBannerImage = (field:any, file:any) => {
     if (file) {
       field.onChange(file.url)
       form.setValue('bannerCldPubId', file.publicId, {
-        shouldValidate: true,
-        shouldDirty: true
+        shouldValidate: true, //this means after form is submited we run it again, so it doubles check
+        shouldDirty: true //this is for watching if value change or not
       })
     } else {
       field.onChange('')
@@ -100,7 +100,7 @@ const Create = () => {
       <h1 className="page-title">Create a Class</h1>
       <div className="intro-row">
         <p>Provide the required information below to add a class.</p>
-        <Button onClick={() => back()}>Go Back</Button>
+        <Button onClick={back}>Go Back</Button>
       </div>
 
       <Separator />
@@ -121,7 +121,7 @@ const Create = () => {
 
                 <FormField control={control}
                   name='bannerUrl'
-                  render={(field) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel>Banner Image
                         <span className="text-orange-600">*</span>
@@ -133,7 +133,7 @@ const Create = () => {
                       <FormMessage />
                       {errors.bannerCldPubId && !errors.bannerUrl && (
                         <p className="text-destructive text-sm">
-                        {erros.bannerCldPubId.message?.toString()}
+                        {errors.bannerCldPubId.message?.toString()}
                       </p>)}
                     </FormItem>
                   )} />

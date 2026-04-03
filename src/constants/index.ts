@@ -115,7 +115,8 @@ const getEnvVar = (key: string): string => {
 // ok the cause of break(ui not showing) is becuase of cloudinary is not not define which in
 // ts is not allowed, simple saying the value for it does not exist
     // -always watch the console.log, may its good to create a alert that can be seen easily, but that not good for user side
-export const CLOUDINARY_UPLOAD_URL = getEnvVar("VITE_CLOUDINARY_UPLOAD_URL");
+    
+export const CLOUDINARY_UPLOAD_URL = getEnvVar("VITE_CLOUDINARY_UPLOAD_URL"); 
 export const CLOUDINARY_CLOUD_NAME = getEnvVar("VITE_CLOUDINARY_CLOUD_NAME");
 export const CLOUDINARY_UPLOAD_PRESET = getEnvVar("VITE_CLOUDINARY_UPLOAD_PRESET");
 export const BACKEND_BASE_URL = getEnvVar("VITE_BACKEND_BASE_URL");

@@ -9,13 +9,13 @@ function UploadWidget({ value = null, onChange, disabled = false }) {
     const onChangeRef = useRef(onChange)
 
     const [preview, setPreview] = useState<UploadWidgetValue | null>(value)
-    const [deleteToken, setDeleteToken] = useState<UploadWidgetValue | null>(null)
-    const [isRemoving, setSsRemoving] = useState(false);
+    // const [deleteToken, setDeleteToken] = useState<string | null>(null)
+    // const [isRemoving, setIsRemoving] = useState(false);
 
 
     useEffect(() => {
         setPreview(value)
-        if (!value) setDeleteToken(null)
+        // if (!value) setDeleteToken(null)
     }, [value])
 
     useEffect(() => {
@@ -51,7 +51,7 @@ function UploadWidget({ value = null, onChange, disabled = false }) {
                     }
                     setPreview(payload)
 
-                    setDeleteToken(result.info.delete_token ?? null)
+                    // setDeleteToken(result.info.delete_token ?? null)
                     onChangeRef.current?.(payload)
 
                 }
@@ -59,20 +59,30 @@ function UploadWidget({ value = null, onChange, disabled = false }) {
             })
             return true
         }
-        if(initializeWidget())
-    }, [onChange])
+        if (initializeWidget()) return
+
+        const intervalId = window.setInterval(() => {
+            if (initializeWidget()) {
+                window.clearInterval(intervalId)
+            }
+        }, 500)
+
+        return ()=>window.clearInterval(intervalId)
+    }, [])
 
 
     const openWidget = () => {
         if (!disabled) widgetRef.current?.open()
     }
 
-    const removeFromCloudinary = async () => { }
+    // const removeFromCloudinary = async () => { }
 
     return (
         <div className="space-y-2">
             {preview ? (
-                <div className="upload-preview"></div>
+                <div className="upload-preview">
+                    <img src={preview.url} alt="Upload file" />
+                </div>
             ) :
                 <div className="upload-dropzone" role='button' tabIndex={0} onClick={openWidget}
                     onKeyDown={(event) => {
