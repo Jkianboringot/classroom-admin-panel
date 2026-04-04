@@ -5,8 +5,8 @@ import { ListView } from '@/components/refine-ui/views/list-view'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { DEPARTMENT_OPTIONS } from '@/constants'
-import { Subject } from '@/types'
+import { Department, Subject } from '@/types'
+import { useList } from '@refinedev/core'
 import { useTable } from '@refinedev/react-table'
 import { ColumnDef } from '@tanstack/react-table'
 import { Filter, Search } from 'lucide-react'
@@ -101,6 +101,20 @@ const SubjectsList = () => {
         }
     });
 
+
+    const { query: departmentsQuery } = useList<Department>({
+        resource: 'departments',
+        pagination: {
+            pageSize: 100
+        }
+    })
+
+
+    const departments = departmentsQuery?.data?.data || []
+    const departmentsLoading = departmentsQuery.isLoading
+
+
+
     return (
         <ListView>
             <Breadcrumb />
@@ -126,7 +140,9 @@ const SubjectsList = () => {
 
                     <div className="flex gap-2 w-full sm:w-auto">
                         <Select value={selectedDepartment}
-                            onValueChange={setSelectedDepartment}>
+                            onValueChange={setSelectedDepartment}
+                                        disabled={departmentsLoading}
+                            >
                             <SelectTrigger>
                                 <SelectValue placeholder='Filter by Department' />
 
@@ -152,10 +168,11 @@ but we dont want to redo the backend then we just change the label
   { value: 'English', label: 'English' }
 ]
 we will map on each one get each value of object and put it in d so now we can access value and label #endregion*/}
-                                {DEPARTMENT_OPTIONS.map(d => (
-                                    <SelectItem key={d.value}
-                                        value={d.value}>
-                                        {d.label}
+                                {departments.map(d => (
+                                    <SelectItem key={d.id}
+                                         value={d.name} >
+                                        {d.name}
+
                                     </SelectItem>
                                 ))}
 
