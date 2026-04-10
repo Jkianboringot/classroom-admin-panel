@@ -29,7 +29,7 @@ const SubjectsList = () => {
     //- the as const is not a forloop its just a hint type so thier is no forloop
     //- its just this 'Get data where department is equal to selectedDepartment' i just over complicated it
     const departmentFilters = selectedDepartment === 'all' ? [] : [
-        { field: 'department', operator: 'eq' as const, value: selectedDepartment }
+        { field: 'departments', operator: 'eq' as const, value: selectedDepartment }
     ]
 
     // if searchQuery has a value take that value and search through the field names 
