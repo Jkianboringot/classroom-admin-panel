@@ -79,7 +79,7 @@ if (!BACKEND_BASE_URL) {
 
 
 
-const buildHttpError = async (response: Response): Promise<HttpError>=> {
+const buildHttpError = async (response: Response): Promise<HttpError> => {
   let message = 'Request Failed'
 
   try {
@@ -134,22 +134,38 @@ const options: CreateDataProviderOptions = {
 
     }
   },
-  create:{
-    getEndpoint:({resource})=>resource,
-    buildBodyParams:async({variables})=>variables,
-    mapResponse:async(response)=>{
-      const json:CreateResponse=await response.json()
-      return json.data??[]
+  create: {
+    getEndpoint: ({ resource }) => resource,
+    buildBodyParams: async ({ variables }) => variables,
+    mapResponse: async (response) => {
+      if (!response.ok) throw await buildHttpError(response)
+      const json: CreateResponse = await response.json()
+      if (json.data == null) {
+        const error = new Error('Create response missing data') as unknown as HttpError
+        error.statusCode = 500
+        throw error
+      }
+      return json.data
+
     }
   },
-  getOne:{
-    getEndpoint:({resource,id})=>`${resource}/${id}`,
-    mapResponse:async(response)=>{
-      const json: GetOneResponse=await response.json()
+  getOne: {
+    getEndpoint: ({ resource, id }) => `${resource}/${id}`,
+    mapResponse: async (response) => {
+      if (!response.ok) throw await buildHttpError(response)
 
-      return json.data??[]
+      const json: GetOneResponse = await response.json()
+
+      if (json.data == null) {
+        const error = new Error('No Data') as unknown as HttpError
+        error.statusCode = 500
+        throw error
+      }
+      return json.data
+
     }
   }
+}
 }
 
 const { dataProvider } = createDataProvider(BACKEND_BASE_URL, options)
