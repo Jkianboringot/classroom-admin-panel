@@ -30,7 +30,6 @@ const SubjectsList = () => {
     //- its just this 'Get data where department is equal to selectedDepartment' i just over complicated it
     const departmentFilters = selectedDepartment === 'all' ? [] : [
         { field: 'department', operator: 'eq' as const, value: selectedDepartment }
-        //if department dropdown does not work its becuase it needs to be departments not department, maybe a backend problem i dont know
     ]
 
     // if searchQuery has a value take that value and search through the field names 
