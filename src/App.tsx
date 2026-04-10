@@ -27,12 +27,12 @@ import SubjectsShow from "./pages/subjects/show.js";
 import Dashboard from "./pages/dashboard.tsx";
 
 import { dataProvider } from "./providers/data";
-import ClassesList from "./pages/classes/lis.jst";
+import ClassesList from "./pages/classes/list.js";
 import ClassesCreate from "./pages/classes/create.js";
 import ClassesShow from "./pages/classes/show.js";
 import { authProvider } from "./providers/auth";
-import { Login } from "./pages/login.js";
-import { Register } from "./pages/register.js";
+import { Login } from "./pages/login";
+import { Register } from "./pages/register";
 import DepartmentsList from "./pages/departments/list.js";
 import DepartmentsCreate from "./pages/departments/create.js";
 import DepartmentShow from "./pages/departments/show.js";
