@@ -24,7 +24,7 @@ import SubjectsList from "./pages/subjects/list.js";
 import { Layout } from "./components/refine-ui/layout/layout";
 import SubjectsCreate from "./pages/subjects/create.js";
 import SubjectsShow from "./pages/subjects/show.js";
-import Dashboard from "./pages/dashboard.tsx";
+import Dashboard from "./pages/dashboard";
 
 import { dataProvider } from "./providers/data";
 import ClassesList from "./pages/classes/list.js";
