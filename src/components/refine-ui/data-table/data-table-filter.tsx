@@ -781,6 +781,8 @@ const CRUD_OPERATOR_LABELS: Record<
   ne: { i18nKey: "table.filter.operator.ne", defaultLabel: "Not equals" },
   lt: { i18nKey: "table.filter.operator.lt", defaultLabel: "Less than" },
   gt: { i18nKey: "table.filter.operator.gt", defaultLabel: "Greater than" },
+  eqs: { i18nKey: "filter.eqs", defaultLabel: "Equals (case sensitive)" },
+nes: { i18nKey: "filter.nes", defaultLabel: "Not equals (case sensitive)" },
   lte: {
     i18nKey: "table.filter.operator.lte",
     defaultLabel: "Less than or equal",
