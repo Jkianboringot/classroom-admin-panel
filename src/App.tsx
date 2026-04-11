@@ -24,7 +24,6 @@ import SubjectsList from "./pages/subjects/list.js";
 import { Layout } from "./components/refine-ui/layout/layout";
 import SubjectsCreate from "./pages/subjects/create.js";
 import SubjectsShow from "./pages/subjects/show.js";
-import Dashboard from "./pages/dashboard.tsx";
 
 import { dataProvider } from "./providers/data";
 import ClassesList from "./pages/classes/list.js";
@@ -140,7 +139,7 @@ function App() {
                     </Authenticated>
                   }
                 >
-                  <Route path="/" element={<Dashboard />} />
+                  {/* <Route path="/" element={<Dashboard />} /> */}
 
                   <Route path="subjects">
                     <Route index element={<SubjectsList />} />
