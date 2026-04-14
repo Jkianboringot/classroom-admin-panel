@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Department } from "@/types";
+import { useState } from "react";
 
 const subjectCreateSchema = z.object({
   departmentId: z.coerce
@@ -45,6 +46,7 @@ type SubjectFormValues = z.infer<typeof subjectCreateSchema>;
 
 const SubjectsCreate = () => {
   const back = useBack();
+
 
   const form = useForm<BaseRecord, HttpError, SubjectFormValues>({
     resolver: zodResolver(subjectCreateSchema),
@@ -75,6 +77,7 @@ const SubjectsCreate = () => {
   });
 
   const departments = departmentsQuery.data?.data ?? [];
+  console.log(departments)
   const departmentsLoading = departmentsQuery.isLoading;
 
   const onSubmit = async (values: SubjectFormValues) => {
@@ -120,9 +123,10 @@ const SubjectsCreate = () => {
                       </FormLabel>
                       <Select
                         onValueChange={(value) =>
-                          field.onChange(Number(value))
+                          field.onChange(Number(value)) //ok this take the id 
                         }
-                        value={field.value ? String(field.value) : ""}
+                        value={field.value ? field.value.toString() : ''}
+                        // value={String(field.value?.toString()) ?? ''}
                         disabled={departmentsLoading}
                       >
                         <FormControl>
@@ -132,10 +136,12 @@ const SubjectsCreate = () => {
                         </FormControl>
                         <SelectContent>
                           {departments.map((department) => (
+
                             <SelectItem
                               key={department.id}
                               value={String(department.id)}
                             >
+
                               {department.name}
                             </SelectItem>
                           ))}

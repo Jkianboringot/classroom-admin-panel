@@ -145,6 +145,7 @@ const ClassesList = () => {
     []
   );
 
+  //this is just the list to show the data
   const { query: subjectsQuery } = useList<Subject>({
     resource: "subjects",
     pagination: {

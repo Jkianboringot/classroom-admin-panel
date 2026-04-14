@@ -92,6 +92,8 @@ const SubjectListPage = () => {
           },
         ];
 
+
+
   const searchFilters = searchQuery
     ? [
         {

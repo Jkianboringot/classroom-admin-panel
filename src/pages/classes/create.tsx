@@ -89,6 +89,7 @@ const ClassesCreate = () => {
   const teachersLoading = teachersQuery.isLoading;
 
   const subjects = subjectsQuery.data?.data || [];
+
   const subjectsLoading = subjectsQuery.isLoading;
 
   return (
